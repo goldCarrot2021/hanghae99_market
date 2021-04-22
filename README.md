@@ -55,6 +55,91 @@
 
 ## 회원가입 기능
 
+### 테스트 코드 작성
+- 회원가입 기능 구현 시 테스크 코드를 작성했습니다. 
+
+## SignupReqeustDtoTest
+- @vaild을 사용한 유효성 검사가 제대로 되는 지 테스트 했습니다.(정상 케이스외 실패케이스까지 테스트한 전체 코드는 git에서 확인할 수 있습니다.)
+
+```java
+import com.hanghae.market.model.User;
+import org.junit.jupiter.api.*;
+import javax.validation.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class SignupReqeustDtoTest {
+
+    private static ValidatorFactory factory;
+    private static Validator validator;
+
+    @BeforeAll
+    public static void init() {
+        factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
+
+    @Nested
+    @DisplayName("회원생성")
+    class CreateUser{
+
+        private Long id;
+        private String username;
+        private String password;
+        private String email;
+        private String city;
+        private String street;
+        private String myself;
+
+
+        @BeforeEach
+        void setup(){
+
+            id = 100L;
+            username = "test33";
+            password ="d23sdfsdDf3234523423&*#*";
+            email ="test1@naver.com";
+            city = "서울";
+            street = "강남";
+            myself = "자기소개";
+
+        }
+
+        @Test
+        @DisplayName("정상케이스")
+        void createUser_Normal(){
+            //given
+
+            SignupReqeustDto reqeustDto =SignupReqeustDto.builder()
+                                                        .username(username)
+                                                        .password(password)
+                                                        .email(email)
+                                                        .city(city)
+                                                        .street(street)
+                                                        .myself(myself)
+                                                        .build();
+            //when
+            User user = reqeustDto.toEntity();
+
+            //then
+            assertNull(user.getId());
+            assertEquals(username,user.getUsername());
+            assertEquals(password,user.getPassword());
+            assertEquals(email,user.getEmail());
+            assertEquals(city, user.getAddress().getCity());
+            assertEquals(street,user.getAddress().getStreet());
+            assertEquals(myself,user.getMyself());
+        }
+
+```
+
+
 ### SignupReqeustDto
 ``` java
     @RequiredArgsConstructor
@@ -271,56 +356,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 - UsernamePasswordAuthenticationFilter 필터를 상속받아 구현했으며 토큰을 만들어서 발급하는 방식으로 되어있습니다.
 - spring security는 attemptAuthentication 함수가 요청을 성공적으로 수행하면 successfulAuthentication가 작동하기때문에 successfulAuthentication를 상속받아 토큰을 발급해 유저정보를 reponse에 실어 보냅니다.
 
-<br>
-### KakaoLoginController
-
-```java
-   //저장한 kakaoUser정보로 로그인요청
-        if(kakaoLoginInfo != null){
-
-            String username = kakaoLoginInfo.getKakaoId();
-            String password = kakaoLoginInfo.getPassword();
-
-            //HttpPost 요청
-            HttpClient client = HttpClientBuilder.create().build();
-            String postUrl ="http://localhost:8080/login";
-            HttpPost httpPost = new HttpPost(postUrl);
-            String data = "{" +
-                    "\"username\": \""+username+"\", " +
-                    "\"password\": \""+password+"\""+
-                    "}";
-
-            StringEntity entity = new StringEntity(data, ContentType.APPLICATION_FORM_URLENCODED);
-            httpPost.setEntity(entity);
-
-            HttpResponse responsePost = client.execute(httpPost);
-
-            //HttpPost요청이 정상적으로 완료 되었다면
-            if (responsePost.getStatusLine().getStatusCode() == 200) {
-
-                // response Body에 있는 값을 꺼냄
-                HttpEntity entitys = responsePost.getEntity();
-                String content = EntityUtils.toString(entitys);
-
-                // response header에 있는 token꺼냄
-                String value = responsePost.getFirstHeader("Authorization").getValue();
-
-                //다시 진짜 사용자의 요청에 리턴해 줄 response에 토큰과 사용자 정보를 넣는다.
-                response.addHeader("Authonrazation", value);
-                response.getWriter().write(content);
-
-            } else {
-                //에러 처리.
-                response.getWriter().write("kakaoLoginError");
-            }
-
-        }else{
-            //에러처리
-            response.getWriter().write("kakaoUserNotFount");
-        }
-        
-  ```
-  - 카카오톡 로그인의 경우 카카오서버에서 카카오 유저의 정보를 반환해서 해당하는 유저가 없는 경우에 회원가입을 진행합니다 . 그 후 회원가입된 정보를 토대로 구현해둔 login로직을 타도록 HttpClinet를 이용해 서버에게 로그인 요청을 보내는 방식으로 구현되어있습니다.
 
 ### JwtAuthorizationFilter
 
@@ -388,7 +423,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
 ```
 - 클라이언트에서 토큰을 header에 보내 요청을 하면 JwtAuthorizationFilter Filter를 타게 됩니다. jwt토큰이 유효한 토큰인지 확인한후 서명이 정상적으로 되면 유저가 존재하는지 확인한다음 강제로 시큐리티 session에 접근하여 authentication객체에 저장합니다
-###### session을 사용하지않겠다고 했는데 시큐리티 session에 접근하는 이유는 스프링 시큐리티 session이 authentication(즉,권한)과 관련된 객체를 관리하기때문입니다. 
+- session을 사용하지않겠다고 했는데 시큐리티 session에 접근하는 이유는 스프링 시큐리티 session이 authentication(즉,권한)과 관련된 객체를 관리하기때문입니다. 
 - 권한 설정을 하지않으면 해당 코드는 필요하지않습니다.
 
 
@@ -421,4 +456,61 @@ public class CorsConfig {
 ```
 - 다른 port의 서버와 요청을 주고발때 발생하는 cors를 해결하기위해 corsFilter를 구현했습니다. config.addAllowedOrigin("*")과  config.addAllowedMethod("*");을 같이 사용할 수 없는 이슈가 있어서 사용할 method를 등록해주는 방식으로 구현했습니다.
 
+
+<br>
+<br>
+# 카카오 로그인기능
+
+### KakaoLoginController
+
+```java
+   //저장한 kakaoUser정보로 로그인요청
+        if(kakaoLoginInfo != null){
+
+            String username = kakaoLoginInfo.getKakaoId();
+            String password = kakaoLoginInfo.getPassword();
+
+            //HttpPost 요청
+            HttpClient client = HttpClientBuilder.create().build();
+            String postUrl ="http://localhost:8080/login";
+            HttpPost httpPost = new HttpPost(postUrl);
+            String data = "{" +
+                    "\"username\": \""+username+"\", " +
+                    "\"password\": \""+password+"\""+
+                    "}";
+
+            StringEntity entity = new StringEntity(data, ContentType.APPLICATION_FORM_URLENCODED);
+            httpPost.setEntity(entity);
+
+            HttpResponse responsePost = client.execute(httpPost);
+
+            //HttpPost요청이 정상적으로 완료 되었다면
+            if (responsePost.getStatusLine().getStatusCode() == 200) {
+
+                // response Body에 있는 값을 꺼냄
+                HttpEntity entitys = responsePost.getEntity();
+                String content = EntityUtils.toString(entitys);
+
+                // response header에 있는 token꺼냄
+                String value = responsePost.getFirstHeader("Authorization").getValue();
+
+                //다시 진짜 사용자의 요청에 리턴해 줄 response에 토큰과 사용자 정보를 넣는다.
+                response.addHeader("Authonrazation", value);
+                response.getWriter().write(content);
+
+            } else {
+                //에러 처리.
+                response.getWriter().write("kakaoLoginError");
+            }
+
+        }else{
+            //에러처리
+            response.getWriter().write("kakaoUserNotFount");
+        }
+        
+  ```
+  - 카카오톡 로그인의 경우 카카오서버에서 카카오 유저의 정보를 반환해서 해당하는 유저가 없는 경우에 회원가입을 진행합니다 . 
+  - 그 후 회원가입된 정보를 토대로 구현해둔 login로직을 타도록 HttpClinet를 이용해 서버에게 로그인 요청을 보내는 방식으로 구현되어있습니다.
+  - KakaoLoginController 로직에서 강제 로그인 처리를 하지않는 이유는 jwt 로그인을 구현해둔 방식이 spring security의 필터를 타기전에 구현해둔 필터를 타야하는 방식이기때문에 
+  - HttpClinet를 이용해 서버에 요청을 보내서 configure설정 대로 fileter를 타게 하고자했습니다.
 
