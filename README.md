@@ -861,3 +861,55 @@ public class FollowService {
 
 - 현재로그인한 사용자가 followUserId 사용자한테 follow한 상태인지 확인하기 위해서 **followRepository.findByFollowUserIdAndUserId**를 사용하여 테이블이 존재한다면 팔로우를 한 상태이기 때문에 map에 true를 넣어서 반환해줍니다.
 - 그리고 followUserId 사용자에 총 팔로우 수를 **followRepository.findByFollowUserId**를 사용하여 List.size()로 팔로우 수를 찾아서 map에 넣어서 반환해줍니다.
+
+
+
+## 회원가입 기능
+
+### SignupReqeustDto
+
+    @RequiredArgsConstructor
+    @Getter
+    @Setter
+    public class SignupReqeustDto {
+
+        @NotBlank(message = "아이디를 비워둘 수 없습니다.")
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{4,12}$",
+                message = "아이디는 숫자와 영어를 포함한 4-12글자여야합니다.")
+        private String username;
+
+        @NotBlank(message = "비밀번호를 비워둘 수 없습니다.")
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$",
+                message = "비밀번호는 영문 대소문자와 숫자,특수문자를 포함한 8-20자여야합니다.")
+        private String password;
+
+        @NotBlank(message = "이메일을 비워둘 수 없습니다.")
+        @Email(message = "메일 양식을 지켜주세요.")
+        private String email;
+
+        private String myself;
+
+
+- @vaild 어노테이션을 이용해서 객체에서 유효성 검사를 처리합니다. (controller의 @RequestBody 에 @vaild 추가해서 사용.)
+- @Patten : 정규식을 이용하여 유효성 검사 가능.
+- @NotBlank : 빈값(공백 포함)인 경우 프론트에게 error메세지 반환.
+- @Email : 이메일 양식 확인
+
+
+### SignupReqeustDto
+
+    /* 아이디(username) 중복 체크 */
+    @GetMapping("/signups/username/{username}")
+    public ResponseEntity username(@PathVariable String username){
+        return ResponseEntity.ok(userService.usernameCheck(username));
+    }
+
+    /* 이메일 중복 체크 */
+    @GetMapping("/signups/email/{email}")
+    public ResponseEntity email(@PathVariable String email){
+        return ResponseEntity.ok(userService.emailCheck(email));
+    }
+
+- 서버단에서 이메일과 아이디를  DB에 혹시라도 잘못된 데이터가 들어가지않도록 처리했습니다.
+
+
