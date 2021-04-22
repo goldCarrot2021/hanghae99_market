@@ -58,6 +58,109 @@
 ### 테스트 코드 작성
 - 회원가입 기능 구현 시 테스크 코드를 작성했습니다. 
 
+### User
+```java
+
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@Entity(name = "user")
+public class User {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Long id;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Embedded
+    private Adderss address;
+
+    @Column
+    private String myself;
+
+    @Column(columnDefinition = "TEXT")
+    private String profile_img;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
+
+    @Column(nullable = true)
+    private String kakaoId;
+
+    //일반회원 reqequstDto
+    @Builder
+    public User(String username , String password,String email,String myself,String city,String street) {
+        this.username = username;
+
+        this.password = password;
+
+        this.email = email;
+
+        this.myself = myself;
+
+        this.address = Adderss.builder()
+                        .city(city)
+                        .street(street)
+                        .build();
+
+        this.role = UserRole.ROLE_USER;
+    }
+
+    // Kakao 회원
+    public User(String username,String password,String email,String kakaoId) {
+        this.username = username;
+
+        this.password = password;
+
+        this.email = email;
+
+        this.myself = "test";
+
+        this.address = Adderss.builder()
+                        .city("서울시")
+                        .street("서울역")
+                    .build();
+        this.role = UserRole.ROLE_USER;
+        this.kakaoId = kakaoId;
+    }
+}
+
+
+```
+- Builder 패턴을 사용해 좀 더 알아보기 명확한 코드를 짜고자 했습니다.
+
+
+```java
+
+@Getter
+@RequiredArgsConstructor
+@Embeddable
+public class Adderss {
+    private String city;
+    private String street;
+
+    @Builder
+    public Adderss(String city, String street) {
+        this.city = city;
+        this.street = street;
+    }
+}
+
+
+```
+- @Embeddable로 Adderss column을 구현해서 좀더 객체 지향적으로 Entity를 구현하고자했습니다.
+
+
 ### SignupReqeustDtoTest
 - @vaild을 사용한 유효성 검사가 제대로 되는 지 테스트 했습니다.(정상 케이스외 실패케이스까지 테스트한 전체 코드는 git에서 확인할 수 있습니다.)
 
