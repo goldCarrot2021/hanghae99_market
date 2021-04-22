@@ -1078,7 +1078,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 }
 ```
-- UsernamePasswordAuthenticationFilter 필터를 상속받아 구현했으며 토큰을 만들어서 발급하는 방식으로 되어있습니다.attemptAuthentication함수가 요청을 성공적으로 수행하면 successfulAuthentication가 작동하는 방식으로 구현되어있습니다. 토큰을 발급해 유저정보를 reponse에 실어 보냅니다.
+- UsernamePasswordAuthenticationFilter 필터를 상속받아 구현했으며 토큰을 만들어서 발급하는 방식으로 되어있습니다.
+- attemptAuthentication함수가 요청을 성공적으로 수행하면 successfulAuthentication가 작동하는 방식으로 구현되어있습니다. 토큰을 발급해 유저정보를 reponse에 실어 보냅니다.
 
 ### KakaoLoginController
 
