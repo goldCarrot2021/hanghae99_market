@@ -3,11 +3,48 @@
 항해마켓 프로젝트입니다.
 항해마켓은 판매자가 팔고싶은 물건을 등록할 수 있고 판매자와 구매자 간의 채팅기능을 사용할 수 있는 마켓입니다.
 
+팀프로젝트의 백엔드 Repository 입니다.
+
+[프론트엔드 Repository](https://github.com/Jinnycorn/hanghaemarket)
+
+# 프로젝트 특징
+- React, Spring을 기반으로 프로젝트 구현
+
+    - 각 파트의 별도 Repository를 생성 후 작업
+    - 프론트 : AWS S3 정적 호스팅
+    - 백엔드 : AWS EC2 서버 호스팅
+    - 빌드 후, S3와 EC2 연동
+
+- 로그인 처리는 Jwt Token 방식으로 처리
+- 게시글 작성 시 프론트에서 이미지 파일 형태로 받아 서버측에서 S3에 업로드 후 Url 돌려주는 방식
+
+# 개요
+- 명칭 : 항해마켓
+- 개발 인원 : 5명 (프론트 2명[허민규,이지은], 백엔드 3명[김승욱,장현준,이은지])
+- 개발 기간 : 2021.04.09 ~ 2021.04.22
+- 개발 환경 : React, Spring
+- 형상 관리 툴 : git
+- 일정 관리 툴 : [Notion](https://www.notion.so/3295a6aca9bd411b9cc7b5eadb9239cb?v=002a8755c0414bf388614efa88f27d8a)
+- 사이트 : 
+- 시연 영상 : 
+
+# API 설계
+![image](https://user-images.githubusercontent.com/70622731/115699219-6b95b400-a3a0-11eb-8c00-c4fcd0c3f420.png)
+![image](https://user-images.githubusercontent.com/70622731/115699310-823c0b00-a3a0-11eb-94ca-103b24c80005.png)
+![image](https://user-images.githubusercontent.com/70622731/115699379-9122bd80-a3a0-11eb-97e6-f309d5b65f61.png)
+![image](https://user-images.githubusercontent.com/70622731/115699448-a0097000-a3a0-11eb-9efc-1780f32e21b8.png)
+
+
 # 프로젝트 기능
 
 - 로그인, 회원가입
-- 게시글, 댓글 CRUD
-- 찜하기, 팔로우
+- Jwt 토큰
+- 소셜로그인
+- 게시글 CRUD
+- 이미지 S3 업로드
+- 댓글 CRUD
+- 찜하기 (좋아요)
+- 팔로우
 - 채팅
 
 
@@ -863,6 +900,7 @@ public class FollowService {
 - 그리고 followUserId 사용자에 총 팔로우 수를 **followRepository.findByFollowUserId**를 사용하여 List.size()로 팔로우 수를 찾아서 map에 넣어서 반환해줍니다.
 
 
+
 <br>
 <br>
 
@@ -1130,6 +1168,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         
   ```
   - 카카오톡 로그인의 경우 카카오서버에서 카카오 유저의 정보를 반환해서 해당하는 유저가 없는 경우에 회원가입을 진행합니다 . 그 후 회원가입된 정보를 토대로 구현해둔 login로직을 타도록 HttpClinet를 이용해 서버에게 로그인 요청을 보내는 방식으로 구현되어있습니다.
+
 
 
 
