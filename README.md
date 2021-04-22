@@ -58,7 +58,7 @@
 ### 테스트 코드 작성
 - 회원가입 기능 구현 시 테스크 코드를 작성했습니다. 
 
-## SignupReqeustDtoTest
+### SignupReqeustDtoTest
 - @vaild을 사용한 유효성 검사가 제대로 되는 지 테스트 했습니다.(정상 케이스외 실패케이스까지 테스트한 전체 코드는 git에서 확인할 수 있습니다.)
 
 ```java
