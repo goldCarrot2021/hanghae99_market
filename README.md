@@ -566,54 +566,6 @@ public class CorsConfig {
 
 ### KakaoLoginController
 
-```java
-   //저장한 kakaoUser정보로 로그인요청
-        if(kakaoLoginInfo != null){
-
-            String username = kakaoLoginInfo.getKakaoId();
-            String password = kakaoLoginInfo.getPassword();
-
-            //HttpPost 요청
-            HttpClient client = HttpClientBuilder.create().build();
-            String postUrl ="http://localhost:8080/login";
-            HttpPost httpPost = new HttpPost(postUrl);
-            String data = "{" +
-                    "\"username\": \""+username+"\", " +
-                    "\"password\": \""+password+"\""+
-                    "}";
-
-            StringEntity entity = new StringEntity(data, ContentType.APPLICATION_FORM_URLENCODED);
-            httpPost.setEntity(entity);
-
-            HttpResponse responsePost = client.execute(httpPost);
-
-            //HttpPost요청이 정상적으로 완료 되었다면
-            if (responsePost.getStatusLine().getStatusCode() == 200) {
-
-                // response Body에 있는 값을 꺼냄
-                HttpEntity entitys = responsePost.getEntity();
-                String content = EntityUtils.toString(entitys);
-
-                // response header에 있는 token꺼냄
-                String value = responsePost.getFirstHeader("Authorization").getValue();
-
-                //다시 진짜 사용자의 요청에 리턴해 줄 response에 토큰과 사용자 정보를 넣는다.
-                response.addHeader("Authonrazation", value);
-                response.getWriter().write(content);
-
-            } else {
-                //에러 처리.
-                response.getWriter().write("kakaoLoginError");
-            }
-
-        }else{
-            //에러처리
-            response.getWriter().write("kakaoUserNotFount");
-        }
-        
-  ```
   - 카카오톡 로그인의 경우 카카오서버에서 카카오 유저의 정보를 반환해서 해당하는 유저가 없는 경우에 회원가입을 진행합니다 . 
-  - 그 후 회원가입된 정보를 토대로 구현해둔 login로직을 타도록 HttpClinet를 이용해 서버에게 로그인 요청을 보내는 방식으로 구현되어있습니다.
-  - KakaoLoginController 로직에서 강제 로그인 처리를 하지않는 이유는 jwt 로그인을 구현해둔 방식이 spring security의 필터를 타기전에 구현해둔 필터를 타야하는 방식이기때문에 
-  - HttpClinet를 이용해 서버에 요청을 보내서 configure설정 대로 fileter를 타게 하고자했습니다.
+  - 그 후 회원가입된 정보를 토대로 구현해둔 login을 callbak주소로 설정해 구현한 로그인 로직을 타도록 구현했습니다.
 
