@@ -22,9 +22,9 @@
 - 명칭 : 항해마켓
 - 개발 인원 : 5명 (프론트 2명[허민규,이지은], 백엔드 3명[김승욱,장현준,이은지])
 - 개발 기간 : 2021.04.09 ~ 2021.04.22
-- 개발 환경 : React, Spring
+- 개발 환경 : React, Spring ,
 - 형상 관리 툴 : git
-- 배포 환경 : AWS EC2, RDS, S3
+- 배포 환경 : AWS EC2, RDS(MYSQL), S3
 - 일정 관리 툴 : [Notion](https://www.notion.so/3295a6aca9bd411b9cc7b5eadb9239cb?v=002a8755c0414bf388614efa88f27d8a)
 - 사이트 : http://hanghaemarket.shop/
 - 시연 영상 : https://www.youtube.com/watch?v=idAJS0OLPhY
