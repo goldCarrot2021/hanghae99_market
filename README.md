@@ -24,6 +24,7 @@
 - 개발 기간 : 2021.04.09 ~ 2021.04.22
 - 개발 환경 : React, Spring
 - 형상 관리 툴 : git
+- 배포 환경 : AWS EC2, RDS, S3
 - 일정 관리 툴 : [Notion](https://www.notion.so/3295a6aca9bd411b9cc7b5eadb9239cb?v=002a8755c0414bf388614efa88f27d8a)
 - 사이트 : http://hanghaemarket.shop/
 - 시연 영상 : https://www.youtube.com/watch?v=idAJS0OLPhY
