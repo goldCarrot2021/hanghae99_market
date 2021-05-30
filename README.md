@@ -1,3 +1,6 @@
+<br>
+<br>
+
 # hanghae99_market
 
 항해마켓 프로젝트입니다.
@@ -6,6 +9,9 @@
 팀프로젝트의 백엔드 Repository 입니다.
 
 [프론트엔드 Repository](https://github.com/Jinnycorn/hanghaemarket)
+
+<br>
+<br>
 
 # 프로젝트 특징
 - React, Spring을 기반으로 프로젝트 구현
@@ -17,6 +23,9 @@
 
 - 로그인 처리는 Jwt Token 방식으로 처리
 - 게시글 작성 시 프론트에서 이미지 파일 형태로 받아 서버측에서 S3에 업로드 후 Url 돌려주는 방식
+
+<br>
+<br>
 
 # 개요
 - 명칭 : 항해마켓
@@ -35,6 +44,8 @@
 ![image](https://user-images.githubusercontent.com/70622731/115699379-9122bd80-a3a0-11eb-97e6-f309d5b65f61.png)
 ![image](https://user-images.githubusercontent.com/70622731/115699448-a0097000-a3a0-11eb-9efc-1780f32e21b8.png)
 
+<br>
+<br>
 
 # 프로젝트 기능
 
@@ -55,7 +66,9 @@
 <br>
 
 
-### 프로젝트 목표
+### 기술 소개
+
+#### 개인적인 프로젝트 목표 
 
 1. 테스트 코드 작성
 
@@ -63,7 +76,8 @@
 
 3.  @Embeddable로 Adderss column을 구현해서 좀더 객체 지향적으로 Entity를 구현하고자했습니다.
 
-
+<br>
+<br>
 
 ### SignupReqeustDto
 ``` java
@@ -113,10 +127,10 @@
 ``` 
 - 서버단에서 이메일과 아이디를  DB에 혹시라도 잘못된 데이터가 들어가지않도록 처리했습니다.
 
-
+<br>
+<br>
 
 ## 로그인 기능
-
 
 ### WebSecurityConfig
 ``` java
@@ -174,6 +188,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 - jwt토큰을 사용함으로 session을 사용하지않고 구현한 필터를 통해 로그인과 권한 인증이 검증되도록 했습니다.
 - 자세한 설명 >  https://goldcarrot2021.tistory.com/23?category=939711
 
+<br>
+<br>
+
 ### CorsConfig
 ```java
 @Configuration
@@ -206,6 +223,7 @@ public class CorsConfig {
 
 <br>
 <br>
+
 # 카카오 로그인기능
 
 ### KakaoLoginController
